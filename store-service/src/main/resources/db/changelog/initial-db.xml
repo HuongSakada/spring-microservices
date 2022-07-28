@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
+http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
+    <changeSet id="initial-sequence" author="sakada">
+        <createSequence sequenceName="SEQ_SHOPS" startValue="10" incrementBy="10"/>
+    </changeSet>
+
+    <changeSet id="initial-stores-table" author="sakada">
+        <createTable tableName="stores">
+            <column name="id" type="NUMBER(19)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_shops"/>
+            </column>
+            <column name="name" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR2(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-products-table" author="sakada">
+        <createTable tableName="products">
+            <column name="id" type="NUMBER(19)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_products"/>
+            </column>
+            <column name="store_id" type="NUMBER(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="available_items" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reserved_items" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-foreign-key" author="sakada">
+        <addForeignKeyConstraint baseTableName="products"
+                                 baseColumnNames="store_id"
+                                 constraintName="fk_product_store"
+                                 referencedTableName="stores"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

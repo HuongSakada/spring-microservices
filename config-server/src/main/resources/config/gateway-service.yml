@@ -12,3 +12,10 @@ spring:
       discovery:
         locator:
           enabled: true
+      routes:
+        - id: store-service
+          uri: lb://store-service
+          predicates:
+            - Path=/store/**
+          filters:
+            - RewritePath=/store/(?<path>.*), /$\{path}
