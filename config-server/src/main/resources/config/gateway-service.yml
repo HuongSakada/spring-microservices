@@ -19,3 +19,9 @@ spring:
             - Path=/store/**
           filters:
             - RewritePath=/store/(?<path>.*), /$\{path}
+        - id: user-service
+            uri: lb://user-service
+            predicates:
+              - Path=/user/**
+            filters:
+              - RewritePath=/user/(?<path>.*), /$\{path}

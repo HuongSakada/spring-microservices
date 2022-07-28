@@ -8,7 +8,7 @@ import javax.persistence.*
 data class ProductModel (
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqProducts")
-    @SequenceGenerator(name = "seqProducts", sequenceName = "SEQ_PRODUCT", allocationSize = 1)
+    @SequenceGenerator(name = "seqProducts", sequenceName = "SEQ_PRODUCTS", allocationSize = 1)
     @Column(name = "id")
     val id: Long = 0,
 

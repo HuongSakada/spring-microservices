@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <!--TABLE STORES-->
+    <changeSet author="sakada"
+               id="seeding-1-stores"
+               labels="tables-stores">
+        <loadData file="db/seed/stores.csv" tableName="stores">
+            <column name="id" type="NUMBER"/>
+            <column name="name" type="STRING"/>
+            <column name="address" type="STRING"/>
+        </loadData>
+    </changeSet>
+
+    <!--TABLE PRODUCTS-->
+    <changeSet author="sakada"
+               id="seeding-2-products"
+               labels="tables-products">
+        <loadData file="db/seed/products.csv" tableName="products">
+            <column name="id" type="NUMBER"/>
+            <column name="name" type="STRING"/>
+            <column name="available_items" type="NUMBER"/>
+            <column name="reserved_items" type="NUMBER"/>
+            <column name="store_id" type="NUMBER"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>
