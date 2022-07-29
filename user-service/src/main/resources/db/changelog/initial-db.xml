@@ -22,4 +22,28 @@ http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibas
             </column>
         </createTable>
     </changeSet>
+
+    <changeSet id="initial-accounts-table" author="sakada">
+        <createTable tableName="accounts">
+            <column name="id" type="NUMBER(19)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_accounts"/>
+            </column>
+            <column name="name" type="VARCHAR2(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount_available" type="NUMBER(19, 0)"/>
+            <column name="amount_reserved" type="NUMBER(19, 0)"/>
+            <column name="user_id" type="NUMBER(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="initial-foreign-key" author="sakada">
+        <addForeignKeyConstraint baseTableName="accounts"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_account_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
 </databaseChangeLog>

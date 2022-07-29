@@ -1,5 +1,6 @@
-package springmicroservices.storeservice.models
+package springmicroservices.userservice.models
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import javax.persistence.*
 
 @Entity
@@ -15,5 +16,9 @@ data class UserModel (
     var name: String,
 
     @Column(name = "email")
-    var email: String
-){}
+    var email: String,
+){
+    @OneToOne(targetEntity = AccountModel::class, mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    var account: AccountModel? = null
+}

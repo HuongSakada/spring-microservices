@@ -14,4 +14,17 @@
             <column name="email" type="STRING"/>
         </loadData>
     </changeSet>
+
+    <!--TABLE ACCOUNTS-->
+    <changeSet author="sakada"
+               id="seeding-1-accounts"
+               labels="tables-accounts">
+        <loadData file="db/seed/accounts.csv" tableName="accounts">
+            <column name="id" type="NUMBER"/>
+            <column name="name" type="STRING"/>
+            <column name="amount_available" type="NUMBER"/>
+            <column name="amount_reserved" type="NUMBER"/>
+            <column name="user_id" type="NUMBER"/>
+        </loadData>
+    </changeSet>
 </databaseChangeLog>
