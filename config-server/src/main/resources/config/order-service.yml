@@ -1,0 +1,25 @@
+spring:
+  h2:
+    console.enabled: true
+  datasource:
+    url: jdbc:h2:~/h2/order_service
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrapAddress: localhost:29092
+    topics:
+      order: order
+
+server:
+  port: 8083
+
+eureka:
+  client:
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
