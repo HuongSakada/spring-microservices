@@ -13,6 +13,11 @@ spring:
   liquibase:
     change-log: classpath:db/changelog-master.xml
     drop-first: true
+  kafka:
+    consumer:
+      bootstrapServers: localhost:29092
+      groupId: order_group
+      autoOffsetReset: earliest
 
 server:
   port: 8081

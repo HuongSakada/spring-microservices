@@ -33,6 +33,7 @@ class LogController(
             val message: Message<OrderModel> = MessageBuilder
                 .withPayload(order)
                 .setHeader(KafkaHeaders.TOPIC, topic)
+                .setHeader(KafkaHeaders.GROUP_ID, "order_group")
                 .setHeader("X-Custom-Header", "Custom header here")
                 .build()
             kafkaTemplate.send(message)
