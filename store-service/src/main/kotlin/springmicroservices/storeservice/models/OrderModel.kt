@@ -1,4 +1,4 @@
-package springmicroservices.orderservice.models
+package springmicroservices.storeservice.models
 
 data class OrderModel(
     var id: Long,

@@ -9,26 +9,38 @@ import org.springframework.kafka.support.KafkaHeaders
 import org.springframework.messaging.Message
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import springmicroservices.orderservice.helpers.enum.Order
 import springmicroservices.orderservice.models.OrderModel
+import kotlin.random.Random
 
 @RestController
 @RequestMapping("/")
-class LogController(
+class OrderController(
     @Value("\${spring.kafka.topics.order}") val topic: String,
-    private val kafkaTemplate: KafkaTemplate<String, Any>
+    private val orderTemplate: KafkaTemplate<Long, OrderModel>
 ) {
-    private val log = LoggerFactory.getLogger(javaClass)
+    private val logger = LoggerFactory.getLogger(javaClass)
 
     @PostMapping
+    fun create(@RequestBody order: OrderModel): OrderModel {
+        order.id = Random.nextLong(1, 1000)
+        order.status = Order.StatusEnum.OPEN.id;
+        order.source = Order.SourceEnum.ORDER.toString()
+        orderTemplate.send(topic, order.id, order)
+        logger.info("Incoming order sent: {}", order)
+
+        return order
+    }
+
+    @PostMapping("/message")
     fun post(@Validated @RequestBody order: OrderModel): ResponseEntity<Any> {
         return try {
-            log.info("Receiving product request")
-            log.info("Sending message to Kafka {}", order)
+            logger.info("Receiving incoming order")
+            logger.info("Sending message to Kafka {}", order)
 
             val message: Message<OrderModel> = MessageBuilder
                 .withPayload(order)
@@ -36,18 +48,13 @@ class LogController(
                 .setHeader(KafkaHeaders.GROUP_ID, "order_group")
                 .setHeader("X-Custom-Header", "Custom header here")
                 .build()
-            kafkaTemplate.send(message)
+            orderTemplate.send(message)
 
-            log.info("Message sent with success")
+            logger.info("Message sent with success")
             ResponseEntity.ok().build()
         } catch (e: Exception) {
-            log.error("Exception: {}", e)
+            logger.error("Exception: {}", e)
             ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error to send the message")
         }
-    }
-
-    @GetMapping("/hello")
-    fun get(): String {
-        return "Hello order!"
     }
 }

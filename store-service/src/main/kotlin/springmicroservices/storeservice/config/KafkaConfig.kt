@@ -1,4 +1,4 @@
-package springmicroservices.orderservice.config
+package springmicroservices.storeservice.config
 
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.apache.kafka.clients.admin.NewTopic
@@ -23,7 +23,7 @@ class KafkaConfig(
     @Bean
     fun orderTopic(): NewTopic {
         return TopicBuilder
-            .name("order")
+            .name("product-order")
             .partitions(1)
             .build()
     }

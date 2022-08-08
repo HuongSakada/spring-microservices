@@ -1,4 +1,4 @@
-package springmicroservices.orderservice.config
+package springmicroservices.storeservice.config
 
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.LongSerializer
@@ -9,7 +9,7 @@ import org.springframework.kafka.core.DefaultKafkaProducerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
 import org.springframework.kafka.support.serializer.JsonSerializer
-import springmicroservices.orderservice.models.OrderModel
+import springmicroservices.storeservice.models.OrderModel
 
 @Configuration
 class KafkaProducerConfig(
@@ -17,7 +17,7 @@ class KafkaProducerConfig(
     private val servers: String
 ) {
     @Bean
-    fun orderProducerFactory(): ProducerFactory<Long, OrderModel> {
+    fun producerFactory(): ProducerFactory<Long, OrderModel> {
         val configProps: MutableMap<String, Any> = HashMap()
         configProps[ProducerConfig.BOOTSTRAP_SERVERS_CONFIG] = servers
         configProps[ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG] = LongSerializer::class.java
@@ -27,7 +27,7 @@ class KafkaProducerConfig(
     }
 
     @Bean
-    fun orderTemplate(): KafkaTemplate<Long, OrderModel> {
-        return KafkaTemplate(orderProducerFactory())
+    fun kafkaTemplate(): KafkaTemplate<Long, OrderModel> {
+        return KafkaTemplate(producerFactory())
     }
 }

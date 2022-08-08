@@ -17,6 +17,6 @@ data class StoreModel (
     @Column(name = "address")
     var address: String? = null
 ){
-    @OneToMany(targetEntity = ProductModel::class, mappedBy = "store", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
-    var products: Set<ProductModel> = setOf()
+//    @OneToMany(targetEntity = ProductModel::class, mappedBy = "store", fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+//    var products: Set<ProductModel> = setOf()
 }

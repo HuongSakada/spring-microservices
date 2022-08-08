@@ -14,10 +14,12 @@ spring:
     change-log: classpath:db/changelog-master.xml
     drop-first: true
   kafka:
+    bootstrapServers: localhost:29092
+    topics:
+      order: product-order
     consumer:
-      bootstrapServers: localhost:29092
-      groupId: order_group
-      autoOffsetReset: earliest
+      properties:
+        spring.json.trusted.packages: "*"
 
 server:
   port: 8081

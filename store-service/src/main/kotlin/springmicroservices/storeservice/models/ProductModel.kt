@@ -16,13 +16,13 @@ data class ProductModel (
     var name: String,
 
     @Column(name = "available_items")
-    var availableItems: Int? = 0,
+    var availableItems: Int,
 
     @Column(name = "reserved_items")
-    var reservedItems: Int? = 0,
+    var reservedItems: Int,
 ){
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    @JsonIgnore
-    lateinit var store: StoreModel
+//    @ManyToOne
+//    @JoinColumn(name = "store_id")
+//    @JsonIgnore
+//    lateinit var store: StoreModel
 }

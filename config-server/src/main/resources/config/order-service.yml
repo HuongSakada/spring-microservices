@@ -11,9 +11,20 @@ spring:
     hibernate:
       ddl-auto: update
   kafka:
-    bootstrapAddress: localhost:29092
+    bootstrapServers: localhost:29092
     topics:
       order: order
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+#      bootstrapServers: localhost:29092
+#      groupId: order_group
+#      autoOffsetReset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
 
 server:
   port: 8083

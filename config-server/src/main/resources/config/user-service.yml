@@ -13,6 +13,13 @@ spring:
   liquibase:
     change-log: classpath:db/changelog-master.xml
     drop-first: true
+  kafka:
+    bootstrapServers: localhost:29092
+    topics:
+      order: user-order
+    consumer:
+      properties:
+        spring.json.trusted.packages: "*"
 
 server:
   port: 8082
