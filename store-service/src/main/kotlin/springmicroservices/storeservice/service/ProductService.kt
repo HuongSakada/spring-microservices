@@ -3,6 +3,7 @@ package springmicroservices.storeservice.service
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
+import springmicroservices.storeservice.config.PRODUCT_TOPIC
 import springmicroservices.storeservice.helpers.enum.Order
 import springmicroservices.storeservice.models.OrderModel
 import springmicroservices.storeservice.repository.ProductRepository
@@ -27,8 +28,9 @@ class ProductService(
                 order.status = Order.StatusEnum.REJECT.id
             }
 
-            orderTemplate.send("product-order", order.id, order)
-            logger.info("Reserved order product: {}", order)
+            order.source = Order.SourceEnum.PRODUCT.toString()
+            orderTemplate.send(PRODUCT_TOPIC, order.id, order)
+            logger.info("Reserved product for order: {}", order)
         }
     }
 

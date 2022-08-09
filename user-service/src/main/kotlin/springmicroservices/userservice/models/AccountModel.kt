@@ -16,13 +16,13 @@ data class AccountModel(
     var name: String,
 
     @Column(name = "amount_available")
-    var amountAvailable: Int,
+    var amountAvailable: Double,
 
     @Column(name = "amount_reserved")
-    var amountReserved: Int
+    var amountReserved: Double
 ) {
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
-    lateinit var user: UserModel
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id", nullable = false)
+//    @JsonBackReference
+//    lateinit var user: UserModel
 }

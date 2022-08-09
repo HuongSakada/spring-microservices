@@ -18,7 +18,7 @@ data class UserModel (
     @Column(name = "email")
     var email: String,
 ){
-    @OneToOne(targetEntity = AccountModel::class, mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JsonManagedReference
-    var account: AccountModel? = null
+//    @OneToOne(targetEntity = AccountModel::class, mappedBy = "user", fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+//    @JsonManagedReference
+//    var account: AccountModel? = null
 }

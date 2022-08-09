@@ -7,7 +7,6 @@ import org.springframework.kafka.annotation.EnableKafka
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableKafka
 class StoreServiceApplication
 
 fun main(args: Array<String>) {

@@ -13,7 +13,7 @@ class OrderConsumer(
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
-    @KafkaListener(topics = ["order"], groupId = "stock")
+    @KafkaListener(topics = ["order"], groupId = "product")
     fun listenOrder(order: OrderModel) {
         logger.info("Store received incoming order: {}", order)
         if (order.status == Order.StatusEnum.OPEN.id) {

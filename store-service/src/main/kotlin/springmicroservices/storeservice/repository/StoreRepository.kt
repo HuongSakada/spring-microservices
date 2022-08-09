@@ -5,4 +5,4 @@ import org.springframework.stereotype.Repository
 import springmicroservices.storeservice.models.StoreModel
 
 @Repository
-interface StoreRepository : CrudRepository<StoreModel, Long>{}
+interface StoreRepository: CrudRepository<StoreModel, Long>{}

@@ -1,3 +1,3 @@
 id,name,amount_available,amount_reserved,user_id
-1,Saving Account,1000,0,1
-2,Saving Account,1200,0,2
+1,Saving Account A,100,0,1
+2,Saving Account B,1200,0,2

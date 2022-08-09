@@ -1,4 +1,4 @@
-package springmicroservices.storeservice.config
+package springmicroservices.userservice.config
 
 import org.apache.kafka.clients.admin.AdminClientConfig
 import org.apache.kafka.clients.admin.NewTopic
@@ -25,11 +25,11 @@ class KafkaConfig(
     @Bean
     fun orderTopic(): NewTopic {
         return TopicBuilder
-            .name(PRODUCT_TOPIC)
+            .name(ACCOUNT_TOPIC)
             .partitions(1)
             .build()
     }
 }
 
 // CONSTANT TOPICS
-const val PRODUCT_TOPIC = "product-order"
+const val ACCOUNT_TOPIC = "account-order"

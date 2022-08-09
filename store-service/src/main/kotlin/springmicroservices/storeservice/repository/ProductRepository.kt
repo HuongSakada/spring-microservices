@@ -1,6 +1,8 @@
 package springmicroservices.storeservice.repository
 
 import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
 import springmicroservices.storeservice.models.ProductModel
 
-interface ProductRepository : CrudRepository<ProductModel, Long> {}
+@Repository
+interface ProductRepository: CrudRepository<ProductModel, Long> {}
