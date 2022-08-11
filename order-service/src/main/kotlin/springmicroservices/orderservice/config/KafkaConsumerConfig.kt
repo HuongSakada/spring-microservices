@@ -24,6 +24,7 @@ class KafkaConsumerConfig(
         configProps[ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG] = servers
         configProps[ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG] = LongDeserializer::class.java
         configProps[ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG] = JsonDeserializer::class.java
+        configProps[JsonDeserializer.TRUSTED_PACKAGES] = "*"
 
         return DefaultKafkaConsumerFactory(configProps)
     }

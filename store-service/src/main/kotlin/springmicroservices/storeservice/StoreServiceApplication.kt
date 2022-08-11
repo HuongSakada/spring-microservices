@@ -6,7 +6,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient
 import org.springframework.kafka.annotation.EnableKafka
 
 @SpringBootApplication
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 class StoreServiceApplication
 
 fun main(args: Array<String>) {

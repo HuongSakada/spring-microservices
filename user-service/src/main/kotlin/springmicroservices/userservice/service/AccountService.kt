@@ -40,10 +40,12 @@ class AccountService(
         if (order.status == Order.StatusEnum.CONFIRMED.id) {
             customer.amountReserved = customer.amountReserved.minus(totalPrice)
             accountRepository.save(customer)
+            logger.info("Confirmed: {}", order)
         } else if (order.status == Order.StatusEnum.ROLLBACK.id && order.source != Order.SourceEnum.ACCOUNT.toString()) {
             customer.amountReserved = customer.amountReserved.minus(totalPrice)
             customer.amountAvailable = customer.amountAvailable.plus(totalPrice)
             accountRepository.save(customer)
-        }
+            logger.info("Rollback: {}", order)
+        } else logger.error("Confirm: the conditions did not match!")
     }
 }

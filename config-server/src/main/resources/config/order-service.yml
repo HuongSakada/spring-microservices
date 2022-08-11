@@ -14,9 +14,12 @@ spring:
     bootstrapServers: localhost:29092
     topics:
       order: order
-#    producer:
+    producer:
 #      key-serializer: org.apache.kafka.common.serialization.LongSerializer
 #      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      streams:
+        properties:
+          default.deserialization.exception.handler: org.apache.kafka.streams.errors.LogAndContinueExceptionHandler,org.springframework.kafka.streams.RecoveringDeserializationExceptionHandler
     consumer:
 #      bootstrapServers: localhost:29092
 #      groupId: order_group
@@ -24,19 +27,25 @@ spring:
 #      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
 #      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "*"
+        spring:
+          json:
+            trusted:
+              packages: "*"
     streams:
       properties:
         default.key.serde: org.apache.kafka.common.serialization.Serdes$LongSerde
         default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
-        spring.json.trusted.packages: "*"
+        spring:
+          json:
+            trusted:
+              packages: "*"
       state-dir: /tmp/kafka-streams/
 
 server:
   port: 8083
 
-eureka:
-  client:
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
+#eureka:
+#  client:
+#    registerWithEureka: true
+#    serviceUrl:
+#      defaultZone: http://localhost:8761/eureka/

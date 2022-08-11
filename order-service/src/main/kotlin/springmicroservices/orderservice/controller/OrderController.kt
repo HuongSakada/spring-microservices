@@ -1,7 +1,6 @@
 package springmicroservices.orderservice.controller
 
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.kafka.core.KafkaTemplate
@@ -13,15 +12,18 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import springmicroservices.orderservice.config.ORDER_TOPIC
 import springmicroservices.orderservice.helpers.enum.Order
 import springmicroservices.orderservice.models.OrderModel
+import springmicroservices.orderservice.service.OrderService
 import kotlin.random.Random
 
 @RestController
 @RequestMapping("/")
 class OrderController(
-    @Value("\${spring.kafka.topics.order}") val topic: String,
-    private val orderTemplate: KafkaTemplate<Long, OrderModel>
+    private val orderTemplate: KafkaTemplate<Long, OrderModel>,
+    private val orderService: OrderService
+
 ) {
     private val logger = LoggerFactory.getLogger(javaClass)
 
@@ -30,7 +32,8 @@ class OrderController(
         order.id = Random.nextLong(1, 1000)
         order.status = Order.StatusEnum.OPEN.id;
         order.source = Order.SourceEnum.ORDER.toString()
-        orderTemplate.send(topic, order.id, order)
+
+        orderService.send(order)
         logger.info("Incoming order sent: {}", order)
 
         return order
@@ -44,7 +47,7 @@ class OrderController(
 
             val message: Message<OrderModel> = MessageBuilder
                 .withPayload(order)
-                .setHeader(KafkaHeaders.TOPIC, topic)
+                .setHeader(KafkaHeaders.TOPIC, ORDER_TOPIC)
                 .setHeader(KafkaHeaders.GROUP_ID, "order_group")
                 .setHeader("X-Custom-Header", "Custom header here")
                 .build()

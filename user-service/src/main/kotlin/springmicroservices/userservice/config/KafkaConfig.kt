@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.annotation.EnableKafka
 import org.springframework.kafka.config.TopicBuilder
 import org.springframework.kafka.core.KafkaAdmin
+import org.springframework.kafka.support.serializer.JsonDeserializer
 
 @Configuration
 @EnableKafka
@@ -19,6 +20,7 @@ class KafkaConfig(
     fun kafkaAdmin(): KafkaAdmin {
         val configs: MutableMap<String, Any?> = HashMap()
         configs[AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG] = servers
+        configs[JsonDeserializer.TRUSTED_PACKAGES] = "*"
         return  KafkaAdmin(configs)
     }
 
