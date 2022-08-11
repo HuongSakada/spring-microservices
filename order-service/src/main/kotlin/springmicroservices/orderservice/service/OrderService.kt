@@ -15,22 +15,22 @@ class OrderService (
         orderTemplate.send(ORDER_TOPIC, order.id, order)
     }
 
-    fun confirm(orderStore: OrderModel, orderCustomer: OrderModel): OrderModel {
+    fun confirm(productOrder: OrderModel, customerOrder: OrderModel): OrderModel {
         val order = OrderModel(
-            orderStore.id,
-            orderStore.customerId,
-            orderStore.productId,
-            orderStore.productCount,
-            orderStore.price
+            productOrder.id,
+            productOrder.customerId,
+            productOrder.productId,
+            productOrder.productCount,
+            productOrder.price
         )
 
-        if (orderStore.status == StatusEnum.ACCEPT.id && orderCustomer.status == StatusEnum.ACCEPT.id) {
+        if (productOrder.status == StatusEnum.ACCEPT.id && customerOrder.status == StatusEnum.ACCEPT.id) {
             order.status = StatusEnum.CONFIRMED.id
-        } else if (orderStore.status == StatusEnum.REJECT.id && orderCustomer.status == StatusEnum.REJECT.id) {
+        } else if (productOrder.status == StatusEnum.REJECT.id && customerOrder.status == StatusEnum.REJECT.id) {
             order.status = StatusEnum.REJECTED.id
-        } else if (orderStore.status == StatusEnum.REJECT.id || orderCustomer.status == StatusEnum.REJECT.id) {
+        } else if (productOrder.status == StatusEnum.REJECT.id || customerOrder.status == StatusEnum.REJECT.id) {
             order.status = StatusEnum.ROLLBACK.id
-            order.source = if (orderStore.source == SourceEnum.PRODUCT.toString()) SourceEnum.PRODUCT.toString() else SourceEnum.ACCOUNT.toString()
+            order.source = if (productOrder.source == SourceEnum.PRODUCT.toString()) SourceEnum.PRODUCT.toString() else SourceEnum.ACCOUNT.toString()
         }
 
         return order;

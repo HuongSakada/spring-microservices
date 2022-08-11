@@ -46,6 +46,6 @@ class AccountService(
             customer.amountAvailable = customer.amountAvailable.plus(totalPrice)
             accountRepository.save(customer)
             logger.info("Rollback: {}", order)
-        } else logger.error("Confirm: the conditions did not match!")
+        }
     }
 }

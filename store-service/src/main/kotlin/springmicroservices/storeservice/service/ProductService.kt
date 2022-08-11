@@ -40,10 +40,12 @@ class ProductService(
         if (order.status == Order.StatusEnum.CONFIRMED.id) {
             product.reservedItems = product.reservedItems.minus(order.productCount)
             productRepository.save(product)
+            logger.info("Confirmed: {}", order)
         } else if (order.status == Order.StatusEnum.ROLLBACK.id && order.source != Order.SourceEnum.PRODUCT.toString()) {
             product.reservedItems = product.reservedItems.minus(order.productCount)
             product.availableItems = product.availableItems.plus(order.productCount)
             productRepository.save(product)
+            logger.info("Rollback: {}", order)
         }
     }
 }

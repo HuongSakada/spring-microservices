@@ -9,8 +9,14 @@ import org.apache.kafka.streams.StreamsBuilder
 import org.apache.kafka.streams.StreamsConfig
 import org.apache.kafka.streams.errors.LogAndContinueExceptionHandler
 import org.apache.kafka.streams.kstream.Consumed
+import org.apache.kafka.streams.kstream.JoinWindows
+import org.apache.kafka.streams.kstream.Joined
 import org.apache.kafka.streams.kstream.KStream
+import org.apache.kafka.streams.kstream.KTable
+import org.apache.kafka.streams.kstream.Materialized
 import org.apache.kafka.streams.kstream.Produced
+import org.apache.kafka.streams.kstream.StreamJoined
+import org.apache.kafka.streams.state.Stores
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -29,6 +35,7 @@ import org.springframework.scheduling.annotation.EnableAsync
 import springmicroservices.orderservice.helpers.OrderSerde
 import springmicroservices.orderservice.models.OrderModel
 import springmicroservices.orderservice.service.OrderService
+import java.time.Duration
 
 @Configuration
 @EnableKafka
@@ -65,7 +72,7 @@ class KafkaConfig(
         props[StreamsConfig.APPLICATION_ID_CONFIG] = "order-stream"
         props[StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG] = Serdes.Long().javaClass.name
         props[StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG] = OrderSerde::class.java
-        props[ConsumerConfig.GROUP_ID_CONFIG] = "account-stream-group"
+        props[ConsumerConfig.GROUP_ID_CONFIG] = "order-stream-group"
         props[JsonDeserializer.TRUSTED_PACKAGES] = "*"
 
         return KafkaStreamsConfiguration(props)
@@ -75,19 +82,20 @@ class KafkaConfig(
     fun stream(builder: StreamsBuilder): KStream<Long, OrderModel> {
         val longSerde = Serdes.Long()
         val orderSerde = JsonSerde<OrderModel>()
-        val stream: KStream<Long, OrderModel> = builder.stream("account-order")
+        val productStream: KStream<Long, OrderModel> = builder.stream("product-order")
+        val accountStream: KStream<Long, OrderModel> = builder.stream("account-order")
 
-        stream
-//            .join(
-//                builder.stream("product-order"),
-//                orderService::confirm,
-//                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(10)),
-//                StreamJoined.with(longSerde, orderSerde, orderSerde)
-//            )
+        productStream
+            .join(
+                accountStream,
+                orderService::confirm,
+                JoinWindows.ofTimeDifferenceWithNoGrace(Duration.ofSeconds(10)),
+                StreamJoined.with(longSerde, orderSerde, orderSerde)
+            )
             .peek { _, value -> logger.info("Order stream output: {}", value) }
             .to("order", Produced.with(longSerde, orderSerde))
 
-        return stream
+        return productStream
     }
 
 //    @Bean
